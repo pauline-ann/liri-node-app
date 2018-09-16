@@ -1,0 +1,47 @@
+{
+    album: { album_type: 'album',
+            artists: [[Object]],
+            available_markets: [],
+            external_urls: { spotify: 'https://open.spotify.com/album/4FKCroUOb0VCWrU7ClYtWR' },
+            href: 'https://api.spotify.com/v1/albums/4FKCroUOb0VCWrU7ClYtWR',
+            id: '4FKCroUOb0VCWrU7ClYtWR',
+            images: [[Object], [Object], [Object]],
+            name: 'FEELS',
+            release_date: '2017-10-20',
+            release_date_precision: 'day',
+            total_tracks: 13,
+            type: 'album',
+            uri: 'spotify:album:4FKCroUOb0VCWrU7ClYtWR' },
+    artists:
+    [{
+        external_urls: [Object],
+        href: 'https://api.spotify.com/v1/artists/1A9o3Ljt67pFZ89YtPPL5X',
+        id: '1A9o3Ljt67pFZ89YtPPL5X',
+        name: 'Snoh Aalegra',
+        type: 'artist',
+        uri: 'spotify:artist:1A9o3Ljt67pFZ89YtPPL5X'
+    },
+    {
+        external_urls: [Object],
+        href: 'https://api.spotify.com/v1/artists/68kEuyFKyqrdQQLLsmiatm',
+        id: '68kEuyFKyqrdQQLLsmiatm',
+        name: 'Vince Staples',
+        type: 'artist',
+        uri: 'spotify:artist:68kEuyFKyqrdQQLLsmiatm'
+    }],
+    available_markets: [],
+    disc_number: 1,
+    duration_ms: 209911,
+    explicit: false,
+    external_ids: { isrc: 'QMEU31702682' },
+    external_urls: { spotify: 'https://open.spotify.com/track/27tCCThExMJEQh7lMp3Sd4' },
+    href: 'https://api.spotify.com/v1/tracks/27tCCThExMJEQh7lMp3Sd4',
+    id: '27tCCThExMJEQh7lMp3Sd4',
+    is_local: false,
+    name: 'Nothing Burns Like The Cold',
+    popularity: 62,
+    preview_url: null,
+    track_number: 9,
+    type: 'track',
+    uri: 'spotify:track:27tCCThExMJEQh7lMp3Sd4'
+}
