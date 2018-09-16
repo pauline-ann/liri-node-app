@@ -14,17 +14,17 @@ switch (command) {
         break;
 
     case "spotify-this-song":
-        spotifySong();
+        song();
         break;
 
     case "movie-this":
-        // ftn();
+        movie();
         break;
 
     case "do-what-it-says":
-        // ftn();
+        doIt();
         break;
-}
+};
 
 function concert() {
 
@@ -55,9 +55,9 @@ function concert() {
             }
         }
     });
-}
+};
 
-function spotifySong() {
+function song() {
 
     console.log("Spotify function running.")
     var song = process.argv[3];
@@ -68,6 +68,9 @@ function spotifySong() {
 
         if (err) {
             console.log('Error occurred: ' + err);
+        }
+        else if (songResult.length === 0) {
+            console.log("No song found.")
         }
         else {
             for (i = 0; i < songResult.length; i++) {
@@ -96,9 +99,42 @@ function spotifySong() {
             }
         }
     });
-    //Artist(s)
-    //The song's name
-    //A preview link of the song from Spotify
-    //The album that the song is from
-    //If no song is provided then your program will default to "The Sign" by Ace of Base
-}
+};
+
+function movie() {
+
+    console.log("Movie function running.");
+    var movie = process.argv[3];
+    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+
+        if (movie === undefined) {
+            console.log("Please input a movie title.");
+        }
+        else if (!error && response.statusCode === 200) {
+
+            var movieObject = JSON.parse(body);
+
+            if (movieObject.length === 0) {
+                console.log("No search results for '" + movie + "'.");
+            }
+            else {
+                console.log("Title: " + movieObject.Title);
+                console.log("Released: " + movieObject.Year);
+                console.log("IMDB Rating: " + movieObject.imdbRating);
+                //console.log("Rotten Tomatoes Rating: " + movieObject.Ratings.Value);
+                console.log("Country: " + movieObject.Country);
+                console.log("Language: " + movieObject.Language);
+                console.log("Plot: " + movieObject.Plot);
+                console.log("Actors: " + movieObject.Actors);
+            }
+        }
+    });
+};
+
+function doIt () {
+
+};
+
+// ISSUES
+// Rotten tomatoes review is in an array, sometimes undefined?
+// Account for arguments longer than one word
