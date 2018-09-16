@@ -4,9 +4,11 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var request = require("request");
 var moment = require("moment");
+var fs = require("fs");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
+var search = process.argv.slice(3).join("+");
 
 switch (command) {
     case "concert-this":
@@ -29,15 +31,14 @@ switch (command) {
 function concert() {
 
     console.log("Concert function running.")
-    var artist = process.argv[3];
-    request("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp", function (error, response, body) {
+    request("https://rest.bandsintown.com/artists/" + search + "/events?app_id=codingbootcamp", function (error, response, body) {
 
         if (!error && response.statusCode === 200) {
 
             var bodyObject = JSON.parse(body);
 
             if (bodyObject.length === 0) {
-                console.log("No upcoming events for '" + artist + "'.");
+                console.log("No upcoming events for '" + search + "'.");
             }
             else {
                 for (i = 0; i < bodyObject.length; i++) {
@@ -57,12 +58,10 @@ function concert() {
     });
 };
 
-function song() {
+function song(search) {
 
     console.log("Spotify function running.")
-    var song = process.argv[3];
-
-    spotify.search({ type: 'track', query: song }, function (err, data) {
+    spotify.search({ type: 'track', query: search }, function (err, data) {
 
         var songResult = data.tracks.items;
 
@@ -75,15 +74,14 @@ function song() {
         else {
             for (i = 0; i < songResult.length; i++) {
 
-                console.log("-------Song Result #" + (i + 1) + "-------");
-
+                console.log("-------Song #" + (i + 1) + "-------");
                 var name = songResult[i].name;
                 console.log("Song name: " + name);
 
                 var artistArray = songResult[i].artists;
                 console.log("Artist(s): ")
                 for (j = 0; j < artistArray.length; j++) {
-                    console.log(artistArray[j].name)
+                    console.log(artistArray[j].name);
                 }
 
                 var preview = songResult[i].preview_url;
@@ -104,24 +102,30 @@ function song() {
 function movie() {
 
     console.log("Movie function running.");
-    var movie = process.argv[3];
-    request("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
+    request("http://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
 
-        if (movie === undefined) {
+        if (search === undefined) {
             console.log("Please input a movie title.");
         }
         else if (!error && response.statusCode === 200) {
 
             var movieObject = JSON.parse(body);
+            var tomatoRating = movieObject.Ratings[1].Value;
 
             if (movieObject.length === 0) {
-                console.log("No search results for '" + movie + "'.");
+                console.log("No search results for '" + search + "'.");
             }
             else {
+                console.log("-------OMDB Search Result-------")
                 console.log("Title: " + movieObject.Title);
                 console.log("Released: " + movieObject.Year);
                 console.log("IMDB Rating: " + movieObject.imdbRating);
-                //console.log("Rotten Tomatoes Rating: " + movieObject.Ratings.Value);
+                if (tomatoRating === undefined) {
+                    console.log("Rotten Tomatoes Rating: n/a");
+                }
+                else {
+                    console.log("Rotten Tomatoes Rating: " + tomatoRating);
+                }
                 console.log("Country: " + movieObject.Country);
                 console.log("Language: " + movieObject.Language);
                 console.log("Plot: " + movieObject.Plot);
@@ -131,10 +135,28 @@ function movie() {
     });
 };
 
-function doIt () {
+function doIt() {
 
+    console.log("Fs function running.")
+    fs.readFile("random.txt", "utf8", function(error, data) {
+
+        if (error) {
+            console.log("Error.")
+        }
+        
+        var textFile = data.split(",");
+        var textCommand = textFile[0];
+        var textSearch = textFile[1];
+
+        if (textCommand === "concert-this") {
+            concert(textSearch);
+        }
+        if (textCommand === "spotify-this-song") {
+            song(textSearch);
+        }
+        if (textCommand === "movie-this") {
+            movie(textSearch);
+        }
+    });
 };
-
-// ISSUES
-// Rotten tomatoes review is in an array, sometimes undefined?
-// Account for arguments longer than one word
+doIt();
