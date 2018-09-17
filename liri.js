@@ -58,7 +58,7 @@ function concert() {
     });
 };
 
-function song(search) {
+function song() {
 
     console.log("Spotify function running.")
     spotify.search({ type: 'track', query: search }, function (err, data) {
@@ -159,4 +159,3 @@ function doIt() {
         }
     });
 };
-doIt();
